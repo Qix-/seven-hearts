@@ -10,6 +10,16 @@ include_directories(
 	src
 	ext/libuv)
 
+# general compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -Wextra -Werror -pedantic -std=c++11")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g2")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+else()
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O4")
+endif()
+
 # libuv
 add_custom_command(
 	OUTPUT ${CMAKE_SOURCE_DIR}/ext/libuv/build/gyp/gyp
@@ -39,32 +49,32 @@ set_property(TARGET uv APPEND PROPERTY IMPORTED_CONFIGURATIONS NOCONFIG)
 set_target_properties(uv PROPERTIES
 	IMPORTED_LOCATION_NOCONFIG "${CMAKE_SOURCE_DIR}/ext/libuv/out/${CMAKE_BUILD_TYPE}/libuv.a")
 
-# common sources
-set(COMMON_SRC
-	src/common/log.cxx)
-
 # login server
 set(LOGIN_SRC
-	${COMMON_SRC}
-	src/login/main.cxx)
-
-add_executable(svh-login ${LOGIN_SRC})
+	src/login/server.cxx)
 
 # character server
 set(CHAR_SRC
-	${COMMON_SRC}
-	src/character/main.cxx)
-
-add_executable(svh-char ${CHAR_SRC})
+	src/character/server.cxx)
 
 # world server
 set(WORLD_SRC
-	${COMMON_SRC}
-	src/world/main.cxx)
+	src/world/server.cxx)
 
-add_executable(svh-world ${WORLD_SRC})
+# common sources
+set(COMMON_SRC
+	${LOGIN_SRC}
+	${CHAR_SRC}
+	${WORLD_SRC}
+	src/common/log.cxx)
+
+# seven hearts
+set(SEVEN_HEARTS_SRC
+	${COMMON_SRC}
+	src/cli/main.cxx)
+
+# seven hearts executable
+add_executable(${CMAKE_PROJECT_NAME} ${SEVEN_HEARTS_SRC})
 
 # linkage
-target_link_libraries(svh-login uv)
-target_link_libraries(svh-char uv)
-target_link_libraries(svh-world uv)
+target_link_libraries(${CMAKE_PROJECT_NAME} uv)

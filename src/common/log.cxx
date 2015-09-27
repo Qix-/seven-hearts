@@ -1,29 +1,53 @@
+#include <iostream>
 #include "log.hxx"
 
 using namespace std;
 using namespace sevenhearts;
 
-const Log::Level Log::Level::INFO(100, "INFO");
+static const char *ESCAPE = "\x1b[";
 
-Log::Level::Level(int level, string name, string ansi, bool fullColor)
+const out::Level out::info(100, "INFO");
+
+out::Level::Level(int level, string name, string ansi, bool fullColor)
 		: level(level),
+		  fullColor(fullColor),
 		  name(name),
-		  ansi(ansi),
-		  fullColor(fullColor) {
+		  ansi(ansi + "m") {
 }
 
-int Log::Level::getLevel() const {
+int out::Level::getLevel() const {
 	return this->level;
 }
 
-bool Log::Level::isFullColor() const {
+bool out::Level::isFullColor() const {
 	return this->fullColor;
 }
 
-string Log::Level::getName() const {
+string out::Level::getName() const {
 	return this->name;
 }
 
-string Log::Level::getAnsi() const {
+string out::Level::getAnsi() const {
 	return this->ansi;
+}
+
+out::Level::Entry out::Level::operator ()() const {
+	return out::Level::Entry(*this);
+}
+
+out::Level::Entry::Entry(const out::Level &level)
+		: stringstream(),
+		  level(level) {
+	*this << ESCAPE << level.getAnsi() << "[" << level.getName() << "]";
+	*this << (!level.isFullColor() ? ESCAPE + level.getAnsi() : "") << "\t";
+}
+
+out::Level::Entry::Entry(const out::Level::Entry &entry)
+		: stringstream(entry.str()),
+		  level(entry.level) {
+}
+
+out::Level::Entry::~Entry() {
+	*this << ESCAPE << "0m" << endl;
+	cout << this->str();
 }

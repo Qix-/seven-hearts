@@ -3,21 +3,32 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 
 namespace sevenhearts {
 
-	namespace Log {
+	namespace out {
 
 		class Level {
 		public:
-			static const Level INFO;
-
-			Level(int level, std::string name, std::string ansi = "", bool fullColor = false);
+			Level(int level, std::string name, std::string ansi = "0", bool fullColor = false);
 
 			int getLevel() const;
 			bool isFullColor() const;
 			std::string getName() const;
 			std::string getAnsi() const;
+
+			class Entry : public std::stringstream {
+			public:
+				Entry(const Level &level);
+				Entry(const Entry &entry);
+				virtual ~Entry();
+
+			private:
+				const Level &level;
+			};
+
+			Entry operator ()() const;
 
 		private:
 			int level;
@@ -26,6 +37,10 @@ namespace sevenhearts {
 			std::string ansi;
 		};
 
+		void init();
+		void destroy();
+
+		extern const Level info;
 	}
 
 }
