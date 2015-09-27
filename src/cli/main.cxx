@@ -3,8 +3,13 @@
 using namespace sevenhearts;
 
 int main(void) {
-	out::info() << "Hello, " << std::string("Qix") << "!";
-	out::info() << "It's great to have you today!";
+	int i = 0;
+	out::info() << ++i << " this is info level";
+	out::error() << ++i << " this is error level";
+	out::warn() << ++i << " this is warn level";
+	out::fatal() << ++i << " this is fatal level";
+	out::debug() << ++i << " this is debug level";
+	out::hack() << ++i << " this is hack level";
 
 	return 0;
 }

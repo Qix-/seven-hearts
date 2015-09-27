@@ -41,6 +41,11 @@ namespace sevenhearts {
 		void destroy();
 
 		extern const Level info;
+		extern const Level error;
+		extern const Level warn;
+		extern const Level fatal;
+		extern const Level debug;
+		extern const Level hack;
 	}
 
 }

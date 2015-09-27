@@ -7,6 +7,11 @@ using namespace sevenhearts;
 static const char *ESCAPE = "\x1b[";
 
 const out::Level out::info(100, "INFO");
+const out::Level out::error(500, "ERR", "1;31", true);
+const out::Level out::warn(250, "WARN", "1;33");
+const out::Level out::fatal(1000, "FATAL", "31;1;7", true);
+const out::Level out::debug(50, "DEBG", "2", true);
+const out::Level out::hack(400, "HACK", "1;35", true);
 
 out::Level::Level(int level, string name, string ansi, bool fullColor)
 		: level(level),
@@ -39,7 +44,10 @@ out::Level::Entry::Entry(const out::Level &level)
 		: stringstream(),
 		  level(level) {
 	*this << ESCAPE << level.getAnsi() << "[" << level.getName() << "]";
-	*this << (!level.isFullColor() ? ESCAPE + level.getAnsi() : "") << "\t";
+	if (!level.isFullColor()) {
+		*this << ESCAPE << "0m";
+	}
+	*this << "\t";
 }
 
 out::Level::Entry::Entry(const out::Level::Entry &entry)
