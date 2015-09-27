@@ -58,4 +58,5 @@ out::Level::Entry::Entry(const out::Level::Entry &entry)
 out::Level::Entry::~Entry() {
 	*this << ESCAPE << "0m" << endl;
 	cout << this->str();
+	cout.flush();
 }
