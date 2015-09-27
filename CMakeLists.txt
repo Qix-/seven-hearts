@@ -66,6 +66,7 @@ set(COMMON_SRC
 	${LOGIN_SRC}
 	${CHAR_SRC}
 	${WORLD_SRC}
+	src/common/daemon.cxx
 	src/common/log.cxx)
 
 # seven hearts
