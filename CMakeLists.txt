@@ -8,7 +8,8 @@ endif()
 # include directories
 include_directories(
 	src
-	ext/libuv)
+	ext/libuv/include
+	ext/code-docs)
 
 # general compiler flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -Wextra -Werror -pedantic -std=c++11")
@@ -67,6 +68,8 @@ set(COMMON_SRC
 	${CHAR_SRC}
 	${WORLD_SRC}
 	src/common/daemon.cxx
+	src/common/socket.cxx
+	src/common/uv-error.cxx
 	src/common/log.cxx)
 
 # seven hearts

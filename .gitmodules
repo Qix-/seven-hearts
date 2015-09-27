@@ -1,3 +1,6 @@
 [submodule "ext/libuv"]
 	path = ext/libuv
 	url = https://github.com/libuv/libuv.git
+[submodule "ext/code-docs"]
+	path = ext/code-docs
+	url = https://gist.github.com/3e5256806e305cb4d0ef.git
