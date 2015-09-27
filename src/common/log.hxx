@@ -37,9 +37,6 @@ namespace sevenhearts {
 			std::string ansi;
 		};
 
-		void init();
-		void destroy();
-
 		extern const Level info;
 		extern const Level error;
 		extern const Level warn;
